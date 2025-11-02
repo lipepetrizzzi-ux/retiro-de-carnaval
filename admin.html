@@ -9,7 +9,7 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, get, remove, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCXvC8pjNXXwCxIFt0ClAgk8BkFotfSLSM",
@@ -95,4 +95,8 @@
     <div id="painel" style="display:none;">
       <h2>Inscrições recebidas</h2>
       <input type="text" id="pesquisaNome" placeholder="Pesquisar por nome..." oninput="mostrarInscricoes()" style="width: 100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
-      <div id
+      <div id="listaInscricoes"></div>
+    </div>
+  </div>
+</body>
+</html>
