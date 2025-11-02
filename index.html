@@ -5,13 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inscrição - Retiro de Carnaval</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Importa Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCXvC8pjNXXwCxIFt0ClAgk8BkFotfSLSM",
+      authDomain: "retiro-de-carnaval.firebaseapp.com",
+      databaseURL: "https://retiro-de-carnaval-default-rtdb.firebaseio.com",
+      projectId: "retiro-de-carnaval",
+      storageBucket: "retiro-de-carnaval.firebasestorage.app",
+      messagingSenderId: "520456806921",
+      appId: "1:520456806921:web:2a099cbc67d01f1b704ed8",
+      measurementId: "G-ZXTZLMB2WJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.enviarInscricao = function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value.trim();
+      const idade = parseInt(document.getElementById('idade').value);
+      const email = document.getElementById('email').value.trim();
+      const comprovante = document.getElementById('comprovante').files[0];
+      const autorizacao = document.getElementById('autorizacao').files[0];
+      const msg = document.getElementById('mensagem');
+
+      if (idade < 14) {
+        msg.textContent = "❌ Idade mínima é 14 anos.";
+        msg.style.color = "red";
+        return;
+      }
+      if (!comprovante) {
+        msg.textContent = "❌ Envie o comprovante de pagamento.";
+        msg.style.color = "red";
+        return;
+      }
+
+      const inscricao = {
+        nome,
+        idade,
+        email,
+        comprovante: comprovante.name,
+        autorizacao: autorizacao ? autorizacao.name : "Não enviada"
+      };
+
+      push(ref(db, 'inscricoes'), inscricao)
+        .then(() => {
+          msg.textContent = "✅ Inscrição enviada com sucesso!";
+          msg.style.color = "green";
+          document.getElementById('inscricaoForm').reset();
+        })
+        .catch(err => {
+          msg.textContent = "❌ Erro ao enviar inscrição.";
+          console.error(err);
+        });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
     <img src="logo.png" alt="Logo do Retiro" class="logo">
     <h1>Inscrição - Retiro de Carnaval 2025</h1>
 
-    <form id="inscricaoForm">
+    <form id="inscricaoForm" onsubmit="enviarInscricao(event)">
       <label>Nome completo:</label>
       <input type="text" id="nome" required>
 
@@ -33,7 +95,5 @@
     <p id="mensagem"></p>
     <a href="admin.html" class="admin-link">Área do administrador</a>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>
