@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscrição - Retiro de Carnaval</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Inscrição - Retiro de Carnaval 2025</h1>
+    <form id="inscricaoForm">
+      <label>Nome completo:</label>
+      <input type="text" id="nome" required>
+
+      <label>Idade:</label>
+      <input type="number" id="idade" required>
+
+      <label>Comprovante de pagamento (R$70):</label>
+      <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required>
+
+      <button type="submit">Enviar inscrição</button>
+    </form>
+    <p id="mensagem"></p>
+    <a href="admin.html" class="admin-link">Área do administrador</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
