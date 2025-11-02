@@ -19,7 +19,10 @@
 
     <div id="painel" style="display:none;">
       <h2>Inscrições recebidas</h2>
-      <ul id="listaInscricoes"></ul>
+      
+      <input type="text" id="pesquisaNome" placeholder="Pesquisar por nome..." oninput="filtrarInscricoes()" style="width: 100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
+      
+      <div id="listaInscricoes"></div>
     </div>
   </div>
 
