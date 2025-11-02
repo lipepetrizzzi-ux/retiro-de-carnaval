@@ -28,8 +28,7 @@ if (form) {
       idade,
       email,
       comprovante: comprovante.name,
-      autorizacao: autorizacao ? autorizacao.name : "Não enviada",
-      valor: 70
+      autorizacao: autorizacao ? autorizacao.name : "Não enviada"
     };
 
     let lista = JSON.parse(localStorage.getItem('inscricoes')) || [];
@@ -42,7 +41,7 @@ if (form) {
   });
 }
 
-// ---- Área do administrador ----
+// ---- Admin login ----
 const loginBtn = document.getElementById('loginBtn');
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
