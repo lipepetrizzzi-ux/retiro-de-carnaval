@@ -29,8 +29,7 @@ if (form) {
       email,
       comprovante: comprovante.name,
       autorizacao: autorizacao ? autorizacao.name : "Não enviada",
-      valor: 70,
-      status: "Pendente"
+      valor: 70
     };
 
     let lista = JSON.parse(localStorage.getItem('inscricoes')) || [];
@@ -64,41 +63,47 @@ if (loginBtn) {
   });
 }
 
-function mostrarInscricoes() {
-  const lista = JSON.parse(localStorage.getItem('inscricoes')) || [];
-  const ul = document.getElementById('listaInscricoes');
-  ul.innerHTML = "";
+// ---- Mostrar inscrições ----
+function mostrarInscricoes(listaFiltrada = null) {
+  const lista = listaFiltrada || JSON.parse(localStorage.getItem('inscricoes')) || [];
+  const div = document.getElementById('listaInscricoes');
+  div.innerHTML = "";
 
   if (lista.length === 0) {
-    ul.innerHTML = "<li>Nenhuma inscrição enviada ainda.</li>";
+    div.innerHTML = "<p>Nenhuma inscrição encontrada.</p>";
     return;
   }
 
   lista.forEach((insc, index) => {
-    const li = document.createElement('li');
-    li.innerHTML = `
-      <strong>${insc.nome}</strong> (${insc.idade} anos) <br>
-      📧 ${insc.email} <br>
-      💵 Comprovante: ${insc.comprovante} <br>
-      🧾 Autorização: ${insc.autorizacao} <br>
-      <button class="aceitar" onclick="enviarWhatsApp(${index}, true)">Aceitar</button>
-      <button class="recusar" onclick="enviarWhatsApp(${index}, false)">Recusar</button>
-      <hr>
+    const card = document.createElement('div');
+    card.className = "card";
+    card.innerHTML = `
+      <p><strong>Nome:</strong> ${insc.nome}</p>
+      <p><strong>Idade:</strong> ${insc.idade} anos</p>
+      <p><strong>E-mail:</strong> ${insc.email}</p>
+      <p><strong>Comprovante:</strong> ${insc.comprovante}</p>
+      <p><strong>Autorização:</strong> ${insc.autorizacao}</p>
+      <button onclick="removerInscricao(${index})">Remover</button>
     `;
-    ul.appendChild(li);
+    div.appendChild(card);
   });
 }
 
-// ---- Enviar mensagem via WhatsApp ----
-function enviarWhatsApp(index, aprovado) {
+// ---- Remover inscrição ----
+function removerInscricao(index) {
+  let lista = JSON.parse(localStorage.getItem('inscricoes')) || [];
+  if (confirm(`Tem certeza que deseja remover a inscrição de ${lista[index].nome}?`)) {
+    lista.splice(index, 1);
+    localStorage.setItem('inscricoes', JSON.stringify(lista));
+    mostrarInscricoes();
+  }
+}
+
+// ---- Pesquisar por nome ----
+function filtrarInscricoes() {
+  const filtro = document.getElementById('pesquisaNome').value.toLowerCase();
   const lista = JSON.parse(localStorage.getItem('inscricoes')) || [];
-  const inscricao = lista[index];
-  const telefoneAdmin = "55SEUNUMEROAQUI"; // coloque seu número, ex: 5599999999999
 
-  const mensagem = aprovado
-    ? `Olá ${inscricao.nome}! 🎉 Sua inscrição no Retiro de Carnaval foi *ACEITA*!`
-    : `Olá ${inscricao.nome}! 😔 Sua inscrição no Retiro de Carnaval foi *RECUSADA*.`;
-
-  const url = `https://wa.me/${telefoneAdmin}?text=${encodeURIComponent(mensagem)}`;
-  window.open(url, "_blank");
+  const filtrada = lista.filter(insc => insc.nome.toLowerCase().includes(filtro));
+  mostrarInscricoes(filtrada);
 }
