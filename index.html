@@ -8,7 +8,9 @@
 </head>
 <body>
   <div class="container">
+    <img src="logo.png" alt="Logo do Retiro" class="logo"> <!-- coloque sua logo aqui -->
     <h1>Inscrição - Retiro de Carnaval 2025</h1>
+
     <form id="inscricaoForm">
       <label>Nome completo:</label>
       <input type="text" id="nome" required>
@@ -16,11 +18,18 @@
       <label>Idade:</label>
       <input type="number" id="idade" required>
 
+      <label>E-mail:</label>
+      <input type="email" id="email" required>
+
       <label>Comprovante de pagamento (R$70):</label>
       <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required>
 
+      <label>Autorização (se menor):</label>
+      <input type="file" id="autorizacao" accept=".jpg,.png,.pdf">
+
       <button type="submit">Enviar inscrição</button>
     </form>
+
     <p id="mensagem"></p>
     <a href="admin.html" class="admin-link">Área do administrador</a>
   </div>
