@@ -1,100 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inscrição - Retiro de Carnaval</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCXvC8pjNXXwCxIFt0ClAgk8BkFotfSLSM",
-      authDomain: "retiro-de-carnaval.firebaseapp.com",
-      databaseURL: "https://retiro-de-carnaval-default-rtdb.firebaseio.com",
-      projectId: "retiro-de-carnaval",
-      storageBucket: "retiro-de-carnaval.firebasestorage.app",
-      messagingSenderId: "520456806921",
-      appId: "1:520456806921:web:2a099cbc67d01f1b704ed8",
-      measurementId: "G-ZXTZLMB2WJ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    window.enviarInscricao = async function(event) {
-      event.preventDefault();
-
-      const nome = document.getElementById('nome').value.trim();
-      const idade = parseInt(document.getElementById('idade').value);
-      const email = document.getElementById('email').value.trim();
-      const comprovante = document.getElementById('comprovante').files[0];
-      const autorizacao = document.getElementById('autorizacao').files[0];
-      const msg = document.getElementById('mensagem');
-
-      if (idade < 14) {
-        msg.textContent = "❌ Idade mínima é 14 anos.";
-        msg.style.color = "red";
-        return;
-      }
-      if (!comprovante) {
-        msg.textContent = "❌ Envie o comprovante de pagamento.";
-        msg.style.color = "red";
-        return;
-      }
-
-      const inscricao = {
-        nome,
-        idade,
-        email,
-        comprovante: comprovante.name,
-        autorizacao: autorizacao ? autorizacao.name : "Não enviada"
-      };
-
-      try {
-        await push(ref(db, 'inscricoes'), inscricao);
-        msg.textContent = "✅ Inscrição enviada com sucesso!";
-        msg.style.color = "green";
-        document.getElementById('inscricaoForm').reset();
-      } catch (error) {
-        msg.textContent = "❌ Erro ao enviar inscrição.";
-        msg.style.color = "red";
-        console.error(error);
-      }
-    }
-  </script>
+  <script type="module" src="script.js"></script>
 </head>
 <body>
-  <div class="container">
-    <img src="a.png" alt="a" class="logo">
-    <h1>Inscrição - Retiro de Carnaval 2025</h1>
+  <header>
+    <img src="logo.png" alt="Logo do Retiro" class="logo" />
+    <h1>Retiro de Carnaval 2025</h1>
+    <p>Faça sua inscrição e viva uma experiência inesquecível!</p>
+  </header>
 
-    <form id="inscricaoForm" onsubmit="enviarInscricao(event)">
-      <label>Nome completo:</label>
-      <input type="text" id="nome" required>
+  <main>
+    <section class="form-section">
+      <h2>Formulário de Inscrição</h2>
+      <form id="inscricaoForm" onsubmit="enviarInscricao(event)">
+        <div class="input-group">
+          <label>Nome completo</label>
+          <input type="text" id="nome" required />
+        </div>
 
-      <label>Idade:</label>
-      <input type="number" id="idade" required>
+        <div class="input-group">
+          <label>Idade</label>
+          <input type="number" id="idade" required />
+        </div>
 
-      <label>E-mail:</label>
-      <input type="email" id="email" required>
+        <div class="input-group">
+          <label>E-mail</label>
+          <input type="email" id="email" required />
+        </div>
 
-      <label>Comprovante de pagamento (R$70):</label>
-      <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required>
+        <div class="input-group">
+          <label>Comprovante de pagamento (R$70)</label>
+          <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required />
+        </div>
 
-      <label>Autorização (se menor):</label>
-      <input type="file" id="autorizacao" accept=".jpg,.png,.pdf">
+        <div class="input-group">
+          <label>Autorização (se menor de idade)</label>
+          <input type="file" id="autorizacao" accept=".jpg,.png,.pdf" />
+        </div>
 
-      <button type="submit">Enviar inscrição</button>
-    </form>
+        <button type="submit" class="btn-enviar">Enviar inscrição</button>
+        <p id="mensagem"></p>
+      </form>
 
-    <p id="mensagem"></p>
-    <a href="admin.html" class="admin-link">Área do administrador</a>
-  </div>
+      <a href="admin.html" class="admin-link">Área do Administrador</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Retiro de Carnaval • Todos os direitos reservados</p>
+  </footer>
 </body>
 </html>
-
