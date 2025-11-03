@@ -1,39 +1,99 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inscrição - Retiro de Carnaval</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="script.js"></script>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCXvC8pjNXXwCxIFt0ClAgk8BkFotfSLSM",
+      authDomain: "retiro-de-carnaval.firebaseapp.com",
+      databaseURL: "https://retiro-de-carnaval-default-rtdb.firebaseio.com",
+      projectId: "retiro-de-carnaval",
+      storageBucket: "retiro-de-carnaval.firebasestorage.app",
+      messagingSenderId: "520456806921",
+      appId: "1:520456806921:web:2a099cbc67d01f1b704ed8",
+      measurementId: "G-ZXTZLMB2WJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.enviarInscricao = async function(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const idade = parseInt(document.getElementById('idade').value);
+      const email = document.getElementById('email').value.trim();
+      const comprovante = document.getElementById('comprovante').files[0];
+      const autorizacao = document.getElementById('autorizacao').files[0];
+      const msg = document.getElementById('mensagem');
+
+      if (idade < 14) {
+        msg.textContent = "❌ Idade mínima é 14 anos.";
+        msg.style.color = "red";
+        return;
+      }
+      if (!comprovante) {
+        msg.textContent = "❌ Envie o comprovante de pagamento.";
+        msg.style.color = "red";
+        return;
+      }
+
+      const inscricao = {
+        nome,
+        idade,
+        email,
+        comprovante: comprovante.name,
+        autorizacao: autorizacao ? autorizacao.name : "Não enviada"
+      };
+
+      try {
+        await push(ref(db, 'inscricoes'), inscricao);
+        msg.textContent = "✅ Inscrição enviada com sucesso!";
+        msg.style.color = "green";
+        document.getElementById('inscricaoForm').reset();
+      } catch (error) {
+        msg.textContent = "❌ Erro ao enviar inscrição.";
+        msg.style.color = "red";
+        console.error(error);
+      }
+    }
+  </script>
 </head>
 <body>
-  <header>
-    <h1>Inscrição - Retiro de Carnaval</h1>
-  </header>
+  <div class="container">
+    <img src="logo.png" alt="Logo do Retiro" class="logo">
+    <h1>Inscrição - Retiro de Carnaval 2025</h1>
 
-  <main>
-    <form id="inscricaoForm">
+    <form id="inscricaoForm" onsubmit="enviarInscricao(event)">
       <label>Nome completo:</label>
-      <input type="text" id="nome" required />
+      <input type="text" id="nome" required>
 
       <label>Idade:</label>
-      <input type="number" id="idade" required />
+      <input type="number" id="idade" required>
 
-      <label>Número de telefone:</label>
-      <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX" required />
+      <label>E-mail:</label>
+      <input type="email" id="email" required>
 
       <label>Comprovante de pagamento (R$70):</label>
-      <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required />
+      <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required>
 
-      <label>Autorização (se menor de idade):</label>
-      <input type="file" id="autorizacao" accept=".jpg,.png,.pdf" />
+      <label>Autorização (se menor):</label>
+      <input type="file" id="autorizacao" accept=".jpg,.png,.pdf">
 
       <button type="submit">Enviar inscrição</button>
-      <p id="mensagem"></p>
     </form>
 
-    <a href="admin.html">Área do Administrador</a>
-  </main>
+    <p id="mensagem"></p>
+    <a href="admin.html" class="admin-link">Área do administrador</a>
+  </div>
 </body>
 </html>
