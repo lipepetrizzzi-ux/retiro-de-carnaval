@@ -1,232 +1,110 @@
-/* --- Variáveis Globais (Paleta) --- */
-:root {
-  --azul-claro: #cfe9ff;
-  --azul-medio: #6aa6ff;
-  --azul-escuro: #1a4faf;
-  --branco: #ffffff;
-  --cinza-claro: #f5f7fa;
-  --vermelho-erro: #ff4d4d;
-  --vermelho-erro-hover: #ff7777;
-  --sombra: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* --- Reset e Estilo Geral --- */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 body {
-  margin: 0;
-  font-family: "Poppins", Arial, sans-serif;
-  background: linear-gradient(180deg, var(--azul-claro), var(--branco));
-  background-repeat: no-repeat; /* Garante que o gradiente não repita */
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #b3e5fc, #e1f5fe);
   color: #333;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
-}
-
-/* --- Cabeçalho --- */
-header {
-  background-color: var(--azul-escuro);
-  width: 100%;
-  text-align: center;
-  color: var(--branco);
-  padding: 20px 0;
-  box-shadow: var(--sombra);
-}
-
-header h1 {
   margin: 0;
-  font-size: 1.8rem;
 }
 
-/* --- Conteúdo Principal (Formulário) --- */
-main {
-  background-color: var(--branco);
-  box-shadow: var(--sombra);
-  border-radius: 16px;
-  padding: 30px;
-  margin: 30px auto;
+.container {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
   width: 90%;
   max-width: 500px;
-  text-align: left;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.logo {
+  display: block;
+  margin: 0 auto 15px;
+  width: 120px;
+}
+
+h1 {
+  text-align: center;
+  color: #0277bd;
 }
 
 label {
-  font-weight: 600;
-  margin-bottom: -5px; /* Leve ajuste para aproximar do input */
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
 }
 
-/* Agrupando os inputs */
 input[type="text"],
 input[type="number"],
-input[type="tel"],
-input[type="password"],
-input[type="file"] {
+input[type="email"],
+input[type="file"],
+input[type="password"] {
+  width: 100%;
   padding: 10px;
+  margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: 0.3s;
 }
 
 input:focus {
-  border-color: var(--azul-medio);
-  outline: none;
-  box-shadow: 0 0 5px var(--azul-medio);
+  border-color: #0288d1;
+  box-shadow: 0 0 5px rgba(2,136,209,0.3);
 }
 
 button {
-  background-color: var(--azul-escuro);
-  color: var(--branco);
-  border: none;
+  margin-top: 15px;
+  width: 100%;
   padding: 12px;
-  border-radius: 10px;
+  background-color: #0288d1;
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background-color 0.3s;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
 button:hover {
-  background-color: var(--azul-medio);
+  background-color: #0277bd;
+}
+
+.admin-link {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #01579b;
+  text-decoration: none;
 }
 
 #mensagem {
-  text-align: center;
+  margin-top: 15px;
   font-weight: bold;
-  margin-top: 10px;
-}
-
-/* --- Links --- */
-a {
-  color: var(--azul-escuro);
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  margin-top: 10px;
-  font-weight: 600;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* --- Painel Administrativo --- */
-.admin-container {
-  background-color: var(--branco);
-  box-shadow: var(--sombra);
-  border-radius: 16px;
-  padding: 20px;
-  width: 90%;
-  max-width: 800px;
-  margin: 40px auto;
-}
-
-.admin-container h1 {
-  text-align: center;
-  color: var(--azul-escuro);
-}
-
-#login {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px auto; /* Centraliza o form */
-  max-width: 400px; /* Limita a largura do form */
-}
-
-#login input {
-  /* Não precisa de width: 60% */
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-#login button {
-  /* Não precisa de width: 40% */
-  max-width: 200px; /* Limita a largura do botão */
-  align-self: center; /* Centraliza o botão no flex-container */
-  margin-top: 10px;
-}
-
-#painel h2 {
-  color: var(--azul-escuro);
   text-align: center;
 }
 
-#pesquisaNome {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-bottom: 20px;
-  font-size: 1rem;
-}
-
-/* --- Lista de Inscrições (Cards) --- */
-#listaInscricoes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-}
-
+/* Painel admin */
 .card {
-  background-color: var(--cinza-claro);
-  border-radius: 12px;
-  box-shadow: var(--sombra);
-  padding: 15px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Sombra mais pronunciada */
-}
-
-.card p {
-  margin: 6px 0;
-  font-size: 0.95rem;
-}
-
-.card a {
-  color: var(--azul-escuro);
-  font-weight: bold;
+  background: #f1f1f1;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .card button {
-  background-color: var(--vermelho-erro); /* Usando variável */
-  margin-top: 10px;
+  width: auto;
+  padding: 8px 12px;
+  margin-top: 8px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .card button:hover {
-  background-color: var(--vermelho-erro-hover); /* Usando variável */
-}
-
-/* --- Responsividade --- */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.4rem;
-  }
-
-  main,
-  .admin-container {
-    padding: 20px;
-    width: 95%; /* Um pouco mais de espaço nas bordas */
-    margin: 20px auto;
-  }
-
-  button {
-    font-size: 0.95rem;
-  }
+  background-color: #d32f2f;
 }
