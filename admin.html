@@ -3,32 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Retiro de Carnaval</title>
+  <title>Admin - Retiro</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-
   <script type="module" src="script.js"></script>
 </head>
 <body>
   <main class="admin-container">
     <h1>Área do Administrador</h1>
 
-    <div id="login" class="login-box">
-      <input type="text" id="usuario" placeholder="Usuário" />
-      <input type="password" id="senha" placeholder="Senha" />
-      <button onclick="loginAdmin()" class="btn-login">Entrar</button>
+    <div id="login">
+      <input id="usuario" placeholder="Usuário" />
+      <input id="senha" placeholder="Senha" type="password" />
+      <button onclick="loginAdmin()">Entrar</button>
       <p id="loginMsg"></p>
     </div>
 
-    <div id="painel" class="painel" style="display:none;">
-      <h2>Inscrições Recebidas</h2>
-      <input type="text" id="pesquisaNome" placeholder="Pesquisar por nome..." oninput="mostrarInscricoes()" />
-      <div id="listaInscricoes" class="lista"></div>
+    <div id="painel" style="display:none;">
+      <h2>Inscrições</h2>
+      <input id="pesquisaNome" placeholder="Pesquisar por nome..." oninput="mostrarInscricoes()" />
+      <div id="listaInscricoes"></div>
     </div>
   </main>
-
-  <footer>
-    <p>© 2025 Retiro de Carnaval</p>
-  </footer>
 </body>
 </html>
