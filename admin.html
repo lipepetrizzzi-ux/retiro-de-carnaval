@@ -1,102 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Retiro</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Retiro de Carnaval</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCXvC8pjNXXwCxIFt0ClAgk8BkFotfSLSM",
-      authDomain: "retiro-de-carnaval.firebaseapp.com",
-      databaseURL: "https://retiro-de-carnaval-default-rtdb.firebaseio.com",
-      projectId: "retiro-de-carnaval",
-      storageBucket: "retiro-de-carnaval.firebasestorage.app",
-      messagingSenderId: "520456806921",
-      appId: "1:520456806921:web:2a099cbc67d01f1b704ed8",
-      measurementId: "G-ZXTZLMB2WJ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    window.loginAdmin = function() {
-      const user = document.getElementById('usuario').value;
-      const pass = document.getElementById('senha').value;
-      const loginMsg = document.getElementById('loginMsg');
-      const painel = document.getElementById('painel');
-      const loginDiv = document.getElementById('login');
-
-      if(user === "admin" && pass === "1234") {
-        loginDiv.style.display = "none";
-        painel.style.display = "block";
-        mostrarInscricoes();
-      } else {
-        loginMsg.textContent = "Usuário ou senha incorretos.";
-        loginMsg.style.color = "red";
-      }
-    }
-
-    window.mostrarInscricoes = function() {
-      const div = document.getElementById('listaInscricoes');
-      div.innerHTML = "";
-      const pesquisa = document.getElementById('pesquisaNome').value.toLowerCase();
-
-      get(ref(db, 'inscricoes')).then(snapshot => {
-        if(!snapshot.exists()) {
-          div.innerHTML = "<p>Nenhuma inscrição encontrada.</p>";
-          return;
-        }
-        snapshot.forEach(childSnap => {
-          const key = childSnap.key;
-          const insc = childSnap.val();
-          if(insc.nome.toLowerCase().includes(pesquisa)) {
-            const card = document.createElement('div');
-            card.className = "card";
-            card.innerHTML = `
-              <p><strong>Nome:</strong> ${insc.nome}</p>
-              <p><strong>Idade:</strong> ${insc.idade} anos</p>
-              <p><strong>E-mail:</strong> ${insc.email}</p>
-              <p><strong>Comprovante:</strong> ${insc.comprovante}</p>
-              <p><strong>Autorização:</strong> ${insc.autorizacao}</p>
-              <button onclick="removerInscricao('${key}')">Remover</button>
-            `;
-            div.appendChild(card);
-          }
-        });
-      });
-    }
-
-    window.removerInscricao = function(key) {
-      if(confirm("Tem certeza que deseja remover esta inscrição?")) {
-        remove(ref(db, 'inscricoes/' + key))
-          .then(() => mostrarInscricoes())
-          .catch(err => console.error(err));
-      }
-    }
-  </script>
+  <script type="module" src="script.js"></script>
 </head>
 <body>
-  <div class="container">
+  <main class="admin-container">
     <h1>Área do Administrador</h1>
 
-    <div id="login">
-      <input type="text" id="usuario" placeholder="Usuário">
-      <input type="password" id="senha" placeholder="Senha">
-      <button onclick="loginAdmin()">Entrar</button>
+    <div id="login" class="login-box">
+      <input type="text" id="usuario" placeholder="Usuário" />
+      <input type="password" id="senha" placeholder="Senha" />
+      <button onclick="loginAdmin()" class="btn-login">Entrar</button>
       <p id="loginMsg"></p>
     </div>
 
-    <div id="painel" style="display:none;">
-      <h2>Inscrições recebidas</h2>
-      <input type="text" id="pesquisaNome" placeholder="Pesquisar por nome..." oninput="mostrarInscricoes()" style="width: 100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
-      <div id="listaInscricoes"></div>
+    <div id="painel" class="painel" style="display:none;">
+      <h2>Inscrições Recebidas</h2>
+      <input type="text" id="pesquisaNome" placeholder="Pesquisar por nome..." oninput="mostrarInscricoes()" />
+      <div id="listaInscricoes" class="lista"></div>
     </div>
-  </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Retiro de Carnaval</p>
+  </footer>
 </body>
 </html>
