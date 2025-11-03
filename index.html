@@ -5,56 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inscrição - Retiro de Carnaval</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-
   <script type="module" src="script.js"></script>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo do Retiro" class="logo" />
-    <h1>Retiro de Carnaval 2025</h1>
-    <p>Faça sua inscrição e viva uma experiência inesquecível!</p>
+    <h1>Inscrição - Retiro de Carnaval</h1>
   </header>
 
   <main>
-    <section class="form-section">
-      <h2>Formulário de Inscrição</h2>
-      <form id="inscricaoForm" onsubmit="enviarInscricao(event)">
-        <div class="input-group">
-          <label>Nome completo</label>
-          <input type="text" id="nome" required />
-        </div>
+    <form id="inscricaoForm">
+      <label>Nome completo:</label>
+      <input type="text" id="nome" required />
 
-        <div class="input-group">
-          <label>Idade</label>
-          <input type="number" id="idade" required />
-        </div>
+      <label>Idade:</label>
+      <input type="number" id="idade" required />
 
-        <div class="input-group">
-          <label>E-mail</label>
-          <input type="email" id="email" required />
-        </div>
+      <label>Número de telefone:</label>
+      <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX" required />
 
-        <div class="input-group">
-          <label>Comprovante de pagamento (R$70)</label>
-          <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required />
-        </div>
+      <label>Comprovante de pagamento (R$70):</label>
+      <input type="file" id="comprovante" accept=".jpg,.png,.pdf" required />
 
-        <div class="input-group">
-          <label>Autorização (se menor de idade)</label>
-          <input type="file" id="autorizacao" accept=".jpg,.png,.pdf" />
-        </div>
+      <label>Autorização (se menor de idade):</label>
+      <input type="file" id="autorizacao" accept=".jpg,.png,.pdf" />
 
-        <button type="submit" class="btn-enviar">Enviar inscrição</button>
-        <p id="mensagem"></p>
-      </form>
+      <button type="submit">Enviar inscrição</button>
+      <p id="mensagem"></p>
+    </form>
 
-      <a href="admin.html" class="admin-link">Área do Administrador</a>
-    </section>
+    <a href="admin.html">Área do Administrador</a>
   </main>
-
-  <footer>
-    <p>© 2025 Retiro de Carnaval • Todos os direitos reservados</p>
-  </footer>
 </body>
 </html>
