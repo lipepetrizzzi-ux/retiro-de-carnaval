@@ -1,110 +1,159 @@
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #b3e5fc, #e1f5fe);
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #b3e5fc 0%, #e3f2fd 100%);
+  color: #333;
 }
 
-.container {
-  background: #fff;
-  padding: 25px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+header {
+  text-align: center;
+  padding: 40px 20px;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 15px;
   width: 120px;
+  margin-bottom: 10px;
 }
 
 h1 {
-  text-align: center;
+  margin: 0;
+  font-weight: 600;
   color: #0277bd;
 }
 
+p {
+  margin-top: 5px;
+  color: #555;
+}
+
+.form-section {
+  max-width: 500px;
+  margin: 30px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #01579b;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
 label {
-  font-weight: bold;
-  margin-top: 10px;
   display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 
 input[type="text"],
 input[type="number"],
 input[type="email"],
-input[type="file"],
-input[type="password"] {
+input[type="file"] {
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #b3e5fc;
   border-radius: 8px;
-  transition: 0.3s;
+  outline: none;
+  font-size: 14px;
+  transition: border 0.2s;
 }
 
 input:focus {
   border-color: #0288d1;
-  box-shadow: 0 0 5px rgba(2,136,209,0.3);
 }
 
-button {
-  margin-top: 15px;
+.btn-enviar,
+.btn-login {
   width: 100%;
   padding: 12px;
   background-color: #0288d1;
-  color: white;
   border: none;
+  color: white;
   border-radius: 8px;
-  cursor: pointer;
   font-size: 16px;
-  transition: 0.3s;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-button:hover {
+.btn-enviar:hover,
+.btn-login:hover {
   background-color: #0277bd;
+}
+
+#mensagem {
+  text-align: center;
+  margin-top: 15px;
 }
 
 .admin-link {
   display: block;
   text-align: center;
-  margin-top: 15px;
-  color: #01579b;
+  margin-top: 20px;
+  color: #0288d1;
   text-decoration: none;
 }
 
-#mensagem {
-  margin-top: 15px;
-  font-weight: bold;
-  text-align: center;
+.admin-link:hover {
+  text-decoration: underline;
 }
 
-/* Painel admin */
+/* Admin Painel */
+.admin-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.login-box input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #b3e5fc;
+}
+
+.lista {
+  margin-top: 20px;
+}
+
 .card {
-  background: #f1f1f1;
+  background: #e3f2fd;
   border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card p {
+  margin: 5px 0;
 }
 
 .card button {
-  width: auto;
-  padding: 8px 12px;
-  margin-top: 8px;
   background-color: #e53935;
   color: white;
   border: none;
+  padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 .card button:hover {
-  background-color: #d32f2f;
+  background-color: #c62828;
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  color: #777;
+  font-size: 14px;
 }
