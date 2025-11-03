@@ -1,7 +1,6 @@
-// Import Firebase SDK
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
+// Importações do Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, push, get, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
 // Configuração do Firebase
 const firebaseConfig = {
@@ -12,113 +11,109 @@ const firebaseConfig = {
   storageBucket: "retiro-de-carnaval.firebasestorage.app",
   messagingSenderId: "520456806921",
   appId: "1:520456806921:web:2a099cbc67d01f1b704ed8",
+  measurementId: "G-ZXTZLMB2WJ"
 };
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const storage = getStorage(app);
 
-// FORMULÁRIO
-const form = document.getElementById("inscricaoForm");
-if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// ----------------- FORMULÁRIO DE INSCRIÇÃO -----------------
+export async function enviarInscricao(event) {
+  event.preventDefault();
 
-    const nome = document.getElementById("nome").value.trim();
-    const idade = document.getElementById("idade").value.trim();
-    const telefone = document.getElementById("telefone").value.trim();
-    const comprovante = document.getElementById("comprovante").files[0];
-    const autorizacao = document.getElementById("autorizacao").files[0];
+  const nome = document.getElementById('nome').value.trim();
+  const idade = parseInt(document.getElementById('idade').value);
+  const email = document.getElementById('email').value.trim();
+  const comprovante = document.getElementById('comprovante').files[0];
+  const autorizacao = document.getElementById('autorizacao').files[0];
+  const msg = document.getElementById('mensagem');
 
-    if (!comprovante) {
-      alert("Envie o comprovante de pagamento (R$70).");
-      return;
-    }
+  if (idade < 14) {
+    msg.textContent = "❌ Idade mínima é 14 anos.";
+    msg.style.color = "red";
+    return;
+  }
+  if (!comprovante) {
+    msg.textContent = "❌ Envie o comprovante de pagamento.";
+    msg.style.color = "red";
+    return;
+  }
 
-    // Verificação básica de valor no nome do arquivo
-    if (!comprovante.name.includes("70")) {
-      alert("⚠️ O nome do comprovante não contém o valor 70. Verifique o arquivo!");
-    }
+  const inscricao = {
+    nome,
+    idade,
+    email,
+    comprovante: comprovante.name,
+    autorizacao: autorizacao ? autorizacao.name : "Não enviada"
+  };
 
-    try {
-      // Envia comprovante
-      const compRef = sRef(storage, "comprovantes/" + comprovante.name);
-      await uploadBytes(compRef, comprovante);
-      const compURL = await getDownloadURL(compRef);
-
-      let autURL = "";
-      if (autorizacao) {
-        const autRef = sRef(storage, "autorizacoes/" + autorizacao.name);
-        await uploadBytes(autRef, autorizacao);
-        autURL = await getDownloadURL(autRef);
-      }
-
-      await push(ref(db, "inscricoes"), {
-        nome,
-        idade,
-        telefone,
-        comprovante: compURL,
-        autorizacao: autURL,
-      });
-
-      form.reset();
-      document.getElementById("mensagem").textContent = "✅ Inscrição enviada com sucesso!";
-    } catch (error) {
-      console.error(error);
-      document.getElementById("mensagem").textContent = "❌ Erro ao enviar.";
-    }
-  });
+  try {
+    await push(ref(db, 'inscricoes'), inscricao);
+    msg.textContent = "✅ Inscrição enviada com sucesso!";
+    msg.style.color = "green";
+    document.getElementById('inscricaoForm').reset();
+  } catch (error) {
+    msg.textContent = "❌ Erro ao enviar inscrição.";
+    msg.style.color = "red";
+    console.error(error);
+  }
 }
 
-// ADMIN LOGIN E PAINEL
-const ADM_USER = "admin";
-const ADM_PASS = "1234";
+// ----------------- LOGIN ADMIN -----------------
+export function loginAdmin() {
+  const user = document.getElementById('usuario').value;
+  const pass = document.getElementById('senha').value;
+  const loginMsg = document.getElementById('loginMsg');
+  const painel = document.getElementById('painel');
+  const loginDiv = document.getElementById('login');
 
-if (window.location.pathname.includes("admin.html")) {
-  const loginDiv = document.getElementById("login");
-  const painel = document.getElementById("painel");
-  const lista = document.getElementById("listaInscricoes");
+  if(user === "admin" && pass === "1234") {
+    loginDiv.style.display = "none";
+    painel.style.display = "block";
+    mostrarInscricoes();
+  } else {
+    loginMsg.textContent = "Usuário ou senha incorretos.";
+    loginMsg.style.color = "red";
+  }
+}
 
-  window.loginAdmin = () => {
-    const u = document.getElementById("usuario").value;
-    const s = document.getElementById("senha").value;
-    if (u === ADM_USER && s === ADM_PASS) {
-      loginDiv.style.display = "none";
-      painel.style.display = "block";
-      mostrarInscricoes();
-    } else {
-      document.getElementById("loginMsg").textContent = "Usuário ou senha incorretos.";
+// ----------------- MOSTRAR INSCRIÇÕES -----------------
+export function mostrarInscricoes() {
+  const div = document.getElementById('listaInscricoes');
+  div.innerHTML = "";
+  const pesquisa = document.getElementById('pesquisaNome') ? document.getElementById('pesquisaNome').value.toLowerCase() : "";
+
+  get(ref(db, 'inscricoes')).then(snapshot => {
+    if(!snapshot.exists()) {
+      div.innerHTML = "<p>Nenhuma inscrição encontrada.</p>";
+      return;
     }
-  };
-
-  window.mostrarInscricoes = () => {
-    onValue(ref(db, "inscricoes"), (snapshot) => {
-      lista.innerHTML = "";
-      const termo = (document.getElementById("pesquisaNome")?.value || "").toLowerCase();
-      snapshot.forEach((child) => {
-        const data = child.val();
-        if (!data.nome.toLowerCase().includes(termo)) return;
-
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          <p><strong>Nome:</strong> ${data.nome}</p>
-          <p><strong>Idade:</strong> ${data.idade}</p>
-          <p><strong>Telefone:</strong> ${data.telefone}</p>
-          <p><a href="${data.comprovante}" target="_blank">📎 Baixar comprovante</a></p>
-          ${data.autorizacao ? `<p><a href="${data.autorizacao}" target="_blank">📎 Autorização</a></p>` : ""}
-          <button onclick="removerInscricao('${child.key}')">Remover inscrição</button>
+    snapshot.forEach(childSnap => {
+      const key = childSnap.key;
+      const insc = childSnap.val();
+      if(insc.nome.toLowerCase().includes(pesquisa)) {
+        const card = document.createElement('div');
+        card.className = "card";
+        card.innerHTML = `
+          <p><strong>Nome:</strong> ${insc.nome}</p>
+          <p><strong>Idade:</strong> ${insc.idade} anos</p>
+          <p><strong>E-mail:</strong> ${insc.email}</p>
+          <p><strong>Comprovante:</strong> ${insc.comprovante}</p>
+          <p><strong>Autorização:</strong> ${insc.autorizacao}</p>
+          <button onclick="removerInscricao('${key}')">Remover</button>
         `;
-        lista.appendChild(div);
-      });
+        div.appendChild(card);
+      }
     });
-  };
+  }).catch(err => console.error(err));
+}
 
-  window.removerInscricao = async (id) => {
-    if (confirm("Deseja realmente remover esta inscrição?")) {
-      await remove(ref(db, "inscricoes/" + id));
-      alert("Inscrição removida.");
-    }
-  };
+// ----------------- REMOVER INSCRIÇÃO -----------------
+export function removerInscricao(key) {
+  if(confirm("Tem certeza que deseja remover esta inscrição?")) {
+    remove(ref(db, 'inscricoes/' + key))
+      .then(() => mostrarInscricoes())
+      .catch(err => console.error(err));
+  }
 }
